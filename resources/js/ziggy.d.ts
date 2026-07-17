@@ -53,7 +53,7 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
-    "home": [],
+    "Login": [],
     "dashboard": [],
     "users": [],
     "users.edit": [
@@ -73,6 +73,37 @@ declare module 'ziggy-js' {
     "users.destroy": [
         {
             "name": "user",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "facilities.index": [],
+    "facilities.create": [],
+    "facilities.store": [],
+    "facilities.show": [
+        {
+            "name": "facility",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "facilities.edit": [
+        {
+            "name": "facility",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "facilities.update": [
+        {
+            "name": "facility",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "facilities.destroy": [
+        {
+            "name": "facility",
             "required": true,
             "binding": "id"
         }

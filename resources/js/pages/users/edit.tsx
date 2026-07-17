@@ -5,37 +5,33 @@ import DeleteButton from '@/components/Button/DeleteButton';
 import LoadingButton from '@/components/Button/LoadingButton';
 import TextInput from '@/components/Form/TextInput';
 import SelectInput from '@/components/Form/SelectInput';
-import FileInput from '@/components/Form/FileInput';
 import { User } from '@/types';
 import FieldGroup from '@/components/Form/FieldGroup';
 import { dashboard, users } from '@/routes';
 
 const Edit = () => {
-  const { user } = usePage<{
-    user: User & { password: string; role: string; };
-  }>().props;
+  const { user } = usePage<{ user: User }>().props;
 
   const { data, setData, errors, post, processing } = useForm({
     name: user.name || '',
     email: user.email || '',
-    password: user.password || '',
     role: user.role || 'user',
 
     // NOTE: When working with Laravel PUT/PATCH requests and FormData
     // you SHOULD send POST request and fake the PUT request like this.
-    _method: 'put'
+    _method: 'patch'
   });
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     // NOTE: We are using POST method here, not PUT/PATCH. See comment above.
-    post(route('users.update', user.id));
+    post(route('users.update', {user: user.id}));
   }
 
   function destroy() {
     if (confirm('Are you sure you want to delete this user?')) {
-      router.delete(route('users.destroy', user.id));
+      router.delete(route('users.destroy', {user: user.id}));
     }
   }
 
@@ -77,20 +73,6 @@ const Edit = () => {
                 error={errors.email}
                 value={data.email}
                 onChange={e => setData('email', e.target.value)}
-              />
-            </FieldGroup>
-
-            <FieldGroup
-              label="Password"
-              name="password"
-              error={errors.password}
-            >
-              <TextInput
-                name="password"
-                type="password"
-                error={errors.password}
-                value={data.password}
-                onChange={e => setData('password', e.target.value)}
               />
             </FieldGroup>
 

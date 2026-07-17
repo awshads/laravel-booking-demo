@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -14,8 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query()->orderBy('name')->paginate(10);
-        $filters = Request::all(['role', 'search']);
+        $filters = Request::only(['role', 'search', 'trashed']);
+        $users = User::query()->orderBy('name')->filter($filters)->paginate(10)->appends(Request::all());
 
         return Inertia::render('users/index', [
             'users' => $users,
@@ -29,20 +29,22 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return Inertia::render('users/edit', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(User $user, UserUpdateRequest $request)
     {
-        $user->update(
-            $request->validated()
-        );
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->save();
 
-        return Redirect::back()->with('success', 'User updated.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('User updated.')]);
+        return to_route('users');
     }
 
     /**
@@ -52,6 +54,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return Redirect::back()->with('success', 'User deleted.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('User deleted.')]);
+        return to_route('users');
     }
 }

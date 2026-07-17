@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { usePage, Link } from '@inertiajs/react';
 import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -16,12 +16,29 @@ import {
 import { dashboard, users } from '@/routes';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const userNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'My Bookings',
+        href: dashboard(),
+        icon: LayoutGrid,
+    }
+];
+
+const staffNavItems: NavItem[] = [
+    ...userNavItems, {
+        title: 'Pending Approval',
+        href: dashboard(),
+        icon: LayoutGrid,
+    }
+];
+
+const adminNavItems: NavItem[] = [
+    ...staffNavItems,
     {
         title: 'Users',
         href: users(),
@@ -32,17 +49,15 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: 'https://github.com/awshads/laravel-booking-demo',
         icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
     },
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage().props;
+    const mainNavItems: NavItem[] = auth.user.role === 'admin' ? adminNavItems : auth.user.role === 'staff' ? staffNavItems : userNavItems;
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

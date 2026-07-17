@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Facility;
 use App\Http\Requests\FacilityStoreRequest;
+use App\Http\Requests\FacilityUpdateRequest;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -62,7 +63,7 @@ class FacilityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Facility $facility, FacilityStoreRequest $request)
+    public function update(Facility $facility, FacilityUpdateRequest $request)
     {
         $facility->name = $request->name;
         $facility->description = $request->description;

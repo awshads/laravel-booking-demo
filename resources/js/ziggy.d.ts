@@ -77,16 +77,8 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
-    "facilities.index": [],
     "facilities.create": [],
     "facilities.store": [],
-    "facilities.show": [
-        {
-            "name": "facility",
-            "required": true,
-            "binding": "id"
-        }
-    ],
     "facilities.edit": [
         {
             "name": "facility",
@@ -104,6 +96,21 @@ declare module 'ziggy-js' {
     "facilities.destroy": [
         {
             "name": "facility",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "bookings.pending": [],
+    "bookings.user": [],
+    "bookings.book": [
+        {
+            "name": "facility",
+            "required": true
+        }
+    ],
+    "bookings.review": [
+        {
+            "name": "booking",
             "required": true,
             "binding": "id"
         }

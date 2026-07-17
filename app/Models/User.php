@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -54,6 +55,16 @@ class User extends Authenticatable implements PasskeyUser
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
+    }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'booked_by_id');
+    }
+
+    public function booking_reviews(): HasMany
+    {
+        return $this->hasMany(Booking::class, 'reviewed_by_id');
     }
 
     public function scopeFilter($query, array $filters)
